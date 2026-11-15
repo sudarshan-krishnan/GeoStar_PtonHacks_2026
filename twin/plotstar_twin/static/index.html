@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlotStar Twin</title>
+<style>
+  :root { --bg:#f3f5f7; --card:#fff; --ink:#18202a; --mute:#5b6675; --line:#d9dee5;
+          --accent:#a65f00; --good:#1f7a52; --bad:#b0362c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#10151c; --card:#18202b; --ink:#e8edf3; --mute:#9aa6b4; --line:#2a3542;
+            --accent:#f2a93b; --good:#4cc38a; --bad:#ff6b5e; }
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 system-ui, sans-serif; padding:16px }
+  h1 { font-size:20px; margin:0 0 4px } .mute { color:var(--mute) }
+  .grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); margin-top:12px }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px }
+  .big { font-size:30px; font-weight:700; font-variant-numeric:tabular-nums }
+  .row { display:flex; justify-content:space-between; gap:8px; padding:3px 0; border-bottom:1px dashed var(--line) }
+  .row:last-child { border:0 }
+  .ok { color:var(--good) } .fail { color:var(--bad) } .warn { color:var(--accent); font-weight:700 }
+  .bars { display:grid; grid-template-columns:repeat(24, 1fr); gap:2px; height:70px; align-items:end; margin-top:8px }
+  .bars div { background:var(--accent); border-radius:2px 2px 0 0; min-height:2px }
+  .bars div.now { outline:2px solid var(--ink) } .bars div.em { background:var(--bad) }
+  button, select { font:inherit; padding:6px 10px; border-radius:8px; border:1px solid var(--line);
+                   background:var(--card); color:var(--ink); cursor:pointer }
+  button.danger { border-color:var(--bad); color:var(--bad) }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px }
+  .scroll { overflow-x:auto }
+  table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums }
+  td, th { text-align:right; padding:4px 6px; border-bottom:1px solid var(--line); white-space:nowrap }
+  td:first-child, th:first-child { text-align:left }
+</style>
+</head>
+<body>
+<h1>PlotStar Live Digital Twin</h1>
+<div class="mute" id="src">connecting…</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="mute">Replay clock</div>
+    <div class="big" id="clock">--:--</div>
+    <div id="status"></div>
+    <div class="row"><span>Grid price (Houston)</span><b id="price"></b></div>
+    <div class="row"><span>Grid carbon</span><b id="co2"></b></div>
+    <div class="row"><span>Wind / Solar / Gas</span><b id="mix"></b></div>
+  </div>
+  <div class="card">
+    <div class="mute">Real chip power</div>
+    <div class="big" id="watts">-- W</div>
+    <div class="mute" id="meter"></div>
+    <div class="row"><span>Above idle</span><b id="above"></b></div>
+    <div class="row"><span>AI workers on</span><b id="workers"></b></div>
+    <div class="row"><span>Facility draw (scaled)</span><b id="fac"></b></div>
+    <div class="row"><span>Exhaust temp</span><b id="temp"></b></div>
+  </div>
+  <div class="card">
+    <div class="mute">Controls (same as the knobs)</div>
+    <div class="row"><span>Site</span><b id="site"></b></div>
+    <div class="row"><span>Cooling</span><b id="cool"></b></div>
+    <div class="row"><span>Flexibility offered</span><b id="flex"></b></div>
+    <div class="row"><span>Carbon price</span><b id="cp"></b></div>
+    <div class="row"><span>Running on chip</span><b id="phys"></b></div>
+    <div class="controls">
+      <select id="siteSel"><option>A</option><option selected>B</option><option>C</option></select>
+      <select id="coolSel"><option value="air">air</option><option value="water">water</option></select>
+      <select id="flexSel"><option>0</option><option>0.25</option><option selected>0.5</option><option>1</option></select>
+      <button id="swap">Swap plan</button>
+      <button class="danger" id="emerg">Grid emergency</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="mute">Limits for this choice</div>
+    <div id="checks"></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <div class="mute">PlotStar schedule: flexible tier on, by hour (red = grid emergency)</div>
+  <div class="bars" id="bars"></div>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <div class="mute">Today so far, scaled to the facility. Both plans are priced from per-worker watts measured on this chip; the live-meter row checks that model. <span id="lastday"></span></div>
+  <div class="scroll"><table id="totals"></table></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const post = body => fetch('/api/twin/control', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+$('siteSel').onchange = e => post({site:e.target.value});
+$('coolSel').onchange = e => post({cooling:e.target.value});
+$('flexSel').onchange = e => post({flex_pct:parseFloat(e.target.value)});
+$('emerg').onclick = () => post({emergency:true});
+let phys = 'plotstar';
+$('swap').onclick = () => post({physical_plan: phys === 'plotstar' ? 'cost_first' : 'plotstar'});
+
+const fmt = (v, d=1) => (v ?? 0).toLocaleString(undefined, {maximumFractionDigits:d, minimumFractionDigits:d});
+
+function render(s) {
+  if (!s || !s.clock) return;
+  phys = s.controls.physical_plan;
+  $('src').textContent = `${s.day.label}: ${s.day.source}` + (s.day.real ? '' : '  (SYNTHETIC: not real data)') +
+    `  |  ESP32: ${s.hardware.connected ? 'connected ' + s.hardware.port : 'not connected'}`;
+  $('clock').textContent = s.clock;
+  $('status').innerHTML = s.diesel ? '<span class="warn fail">DIESEL BACKUP ON</span>'
+    : s.emergency ? '<span class="warn">Grid emergency: flexible load curtailed</span>' : '<span class="ok">Grid normal</span>';
+  $('price').textContent = `$${fmt(s.grid.price)}/MWh`;
+  $('co2').textContent = `${fmt(s.grid.carbon,0)} gCO₂/kWh`;
+  $('mix').textContent = `${fmt(s.grid.wind_mw/1000)} / ${fmt(s.grid.solar_mw/1000)} / ${fmt(s.grid.gas_mw/1000)} GW`;
+  $('watts').textContent = `${fmt(s.power.watts)} W`;
+  $('meter').textContent = s.power.label;
+  $('above').textContent = `${fmt(s.power.above_idle_w)} W (idle ${fmt(s.power.idle_w)} W)`;
+  $('workers').textContent = `${s.workers.active} / ${s.workers.total}  (${s.workers.batches.toLocaleString()} batches)`;
+  $('fac').textContent = `${fmt(s.facility.mw,0)} MW at PUE ${s.facility.pue}`;
+  $('temp').textContent = s.temp_c == null ? 'not connected' : `${fmt(s.temp_c)} °C`;
+  const c = s.controls;
+  $('site').textContent = c.site; $('cool').textContent = c.cooling; $('flex').textContent = `${c.flex_pct}% of hours`;
+  $('cp').textContent = `$${fmt(c.carbon_price,0)}/t`;
+  $('phys').textContent = c.physical_plan === 'plotstar' ? 'PlotStar plan' : 'Cost-first plan';
+  $('checks').innerHTML = s.checks.map(k => `<div class="row"><span>${k.name}</span><span class="${k.ok?'ok':'fail'}">${k.ok?'PASS':'FAIL'}: ${k.detail}</span></div>`).join('');
+  const p = s.plans.plotstar, hr = Math.floor(s.hour);
+  $('bars').innerHTML = p.flex_on.map((v,i) => `<div title="${i}:00 ${Math.round(v*100)}%" class="${i===hr?'now':''} ${s.emergency_hours.includes(i)?'em':''}" style="height:${Math.max(3, v*100)}%"></div>`).join('');
+  const t = s.totals_today;
+  const cols = [['energy_mwh','Energy MWh',0],['carbon_t','Carbon t',1],['cost_usd','Cost $',0],['peak_hour_mw','Peak-hour MW',0],['diesel_hours','Diesel h',1],['water_m3','Water m³',0],['curtailed_hours','Curtailed h',1]];
+  const m = s.measured_today, err = m.model_error_pct == null ? '' : ` (${m.model_error_pct > 0 ? '+' : ''}${m.model_error_pct}% vs model)`;
+  $('totals').innerHTML = `<tr><th></th>${cols.map(x=>`<th>${x[1]}</th>`).join('')}</tr>` +
+    ['plotstar','cost_first'].map(k => `<tr><td>${k==='plotstar'?'PlotStar':'Cost-first'}</td>${cols.map(x=>`<td>${fmt(t[k][x[0]],x[2])}</td>`).join('')}</tr>`).join('') +
+    `<tr class="mute"><td>Live meter: ${m.plan==='plotstar'?'PlotStar':'Cost-first'} on chip${err}</td>${cols.map(x=>`<td>${x[0]==='curtailed_hours'?'':fmt(m[x[0]],x[2])}</td>`).join('')}</tr>`;
+  if (s.last_day) {
+    const a = s.last_day.totals.plotstar, b = s.last_day.totals.cost_first;
+    $('lastday').textContent = `| last full day: PlotStar ${fmt(a.carbon_t,1)} t vs cost-first ${fmt(b.carbon_t,1)} t CO₂, peak-hour ${fmt(a.peak_hour_mw,0)} vs ${fmt(b.peak_hour_mw,0)} MW`;
+  }
+}
+
+function connect() {
+  const ws = new WebSocket(`ws://${location.host}/ws/twin`);
+  ws.onmessage = e => render(JSON.parse(e.data));
+  ws.onclose = () => { $('src').textContent = 'twin not reachable, retrying…'; setTimeout(connect, 1500); };
+}
+connect();
+</script>
+</body>
+</html>

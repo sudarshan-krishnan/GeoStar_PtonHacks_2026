@@ -1,0 +1,135 @@
+/* ==========================================================================
+   GeoStar alignment for /dashboard-2. Loaded last.
+   Brings the workspace onto the landing page's type, wordmark and ink so the
+   story and the product read as one thing. Layout and behaviour stay in the
+   base sheets; this only tunes type, chrome and a few sizes.
+   ========================================================================== */
+
+.d2-shell.sb {
+  --gs-brand: #1f4a36;
+  --gs-lime: #c9ec7a;
+  --gs-mono: var(--ps-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  --gs-serif: var(--ps-serif, Georgia, serif);
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+/* ---------- wordmark: the landing's star + Geo**Star** */
+.d2-shell.sb .d2-brand {
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.d2-shell.sb .d2-brand b {
+  font-weight: 700;
+}
+.d2-shell.sb .d2-brand small {
+  margin-top: 2px;
+  font-family: var(--gs-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-muted);
+}
+.d2-shell.sb .d2-brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #101411;
+  border-color: #101411;
+}
+.d2-shell.sb .d2-brand-star {
+  width: 20px;
+  height: 20px;
+  color: var(--gs-lime);
+  --brand-center: #101411;
+  transition: transform 0.8s var(--sb-spring);
+}
+.d2-shell.sb .d2-brand:hover .d2-brand-star {
+  transform: rotate(90deg);
+}
+
+/* ---------- overlines and chips: mono, like the landing's eyebrows */
+.d2-shell.sb .d2-overline,
+.d2-shell.sb .d2-edition,
+.d2-shell.sb .d2-footer > span:last-child,
+.d2-shell.sb .d2-sample-tag,
+.d2-shell.sb .d2-card-index,
+.d2-shell.sb .d2-step-count {
+  font-family: var(--gs-mono);
+}
+.d2-shell.sb .d2-overline {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+}
+.d2-shell.sb .d2-edition > span {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+.d2-shell.sb .d2-footer {
+  font-size: 12px;
+}
+.d2-shell.sb .d2-footer > span:last-child {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* ---------- headings: tighter, the landing's display rhythm */
+.d2-shell.sb .d2-workspace h1 {
+  letter-spacing: -0.035em;
+}
+.d2-shell.sb .d2-workspace h2 {
+  letter-spacing: -0.025em;
+}
+
+/* ---------- module captions were 10-11px grey on green: lift them to readable */
+.d2-shell.sb .d2-module small {
+  font-size: 11.5px;
+}
+.d2-shell.sb .d2-workspace-name small {
+  font-size: 11px;
+}
+
+/* ---------- primary action: the landing's ink pill, brand green on hover (was a lime gradient) */
+.d2-shell.sb .d2-button {
+  color: #fff;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 9px 20px;
+  background: #101411;
+  border: 1px solid #101411;
+  box-shadow: 0 10px 22px -14px rgba(16, 20, 17, 0.7);
+  transition:
+    background 0.25s ease,
+    box-shadow 0.3s ease,
+    transform 0.35s var(--sb-spring);
+}
+.d2-shell.sb .d2-button:hover:not(:disabled) {
+  background: var(--gs-brand);
+  border-color: var(--gs-brand);
+  box-shadow: 0 14px 28px -14px rgba(31, 74, 54, 0.75);
+}
+.d2-shell.sb .d2-button svg {
+  transition: transform 0.35s var(--sb-spring);
+}
+.d2-shell.sb .d2-button:hover:not(:disabled) svg:last-child {
+  transform: translateX(3px);
+}
+.d2-shell.sb .d2-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.d2-shell.sb .d2-button:disabled {
+  opacity: 0.5;
+}
+
+/* ---------- sidebar: 28% of a wide screen left a tall empty column; cap it */
+@media (min-width: 1151px) {
+  .d2-shell.sb:not(.st-twin-host) {
+    grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+  }
+}

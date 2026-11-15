@@ -1,0 +1,175 @@
+/* ==========================================================================
+   GeoStar theme for /studio, the full app (map, drone, plans, analysis, design).
+   Loaded last. Puts the studio on the same type, palette, buttons and chrome as
+   the /dashboard-2 workspace and the landing page. No layout or behaviour changes
+   beyond the floating sidebar card.
+   ========================================================================== */
+
+.st {
+  --st-bg: #f7faf2;
+  --st-panel: #ffffff;
+  --st-line: #d3ddcb;
+  --st-line-2: #e8eee2;
+  --st-ink: #1c3026;
+  --st-ink-2: #3d4d41;
+  --st-muted: #6b776e;
+  --st-accent: #264d39;
+  --st-accent-2: #4f7f5b;
+  --st-tint: #eef5e3;
+  --st-hair: #dde5d6;
+  --st-glass-line: #dde5d6;
+  --st-warn: #8f4f00;
+  --st-mono: var(--ps-mono, ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace);
+  --gs-ink: #101411;
+  --gs-brand: #1f4a36;
+  --gs-lime: #c9ec7a;
+  --gs-spring: cubic-bezier(0.3, 0.9, 0.3, 1);
+  font-family: var(--ps-sans, -apple-system), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background:
+    radial-gradient(1200px 560px at 85% -10%, rgba(201, 236, 122, 0.22), transparent 60%),
+    radial-gradient(900px 480px at -10% 110%, rgba(111, 162, 78, 0.08), transparent 60%),
+    linear-gradient(180deg, #f3f8ea, #ffffff 70%);
+}
+.st h1 {
+  font-size: 32px;
+  letter-spacing: -0.035em;
+}
+.st h3 {
+  letter-spacing: -0.015em;
+}
+
+/* ---------- top bar: the GeoStar wordmark, frosted, pill links */
+.st-top {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+.st-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--st-ink);
+  text-decoration: none;
+}
+.st-mark b {
+  font-weight: 700;
+}
+.st-mark-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--gs-ink);
+}
+.st-mark-icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gs-lime);
+  --brand-center: var(--gs-ink);
+  transition: transform 0.8s var(--gs-spring);
+}
+.st-mark:hover .st-mark-icon svg {
+  transform: rotate(90deg);
+}
+.st-top-nav a {
+  font-size: 10.5px;
+}
+
+/* ---------- workflow rail: a floating card like the workspace sidebar */
+.st-rail {
+  width: 236px;
+  margin: 14px 0 14px 14px;
+  padding: 18px 12px;
+  border: 1px solid var(--st-hair);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 1px 0 rgba(31, 35, 40, 0.04), 0 18px 40px -28px rgba(31, 74, 54, 0.35);
+}
+.st-rail li {
+  padding: 10px 10px;
+  border-radius: 12px;
+}
+.st-rail li.on {
+  background: #fff;
+  border-color: var(--st-line);
+  box-shadow: 0 1px 0 rgba(31, 35, 40, 0.04), 0 6px 16px -10px rgba(31, 74, 54, 0.35);
+}
+.st-rail li.on b {
+  color: var(--st-ink);
+}
+.st-rail li.on span {
+  color: var(--st-muted);
+  opacity: 1;
+}
+.st-rail li.on i {
+  background: #6fa24e;
+  border-color: #6fa24e;
+  color: #fff;
+}
+.st-rail li.on::before {
+  content: '';
+  position: absolute;
+  left: -13px;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 3px;
+  background: #6fa24e;
+}
+.st-rail li.done i {
+  background: var(--st-accent);
+  border-color: var(--st-accent);
+  color: #fff;
+}
+.st-rail-foot {
+  border-radius: 14px;
+}
+
+/* ---------- cards */
+.st-card {
+  border-radius: 18px;
+}
+
+/* ---------- buttons: the landing's pills; primary is ink, brand green on hover */
+.st-btn {
+  border-radius: 999px;
+  padding: 0 16px;
+}
+.st-btn.primary {
+  background: var(--gs-ink);
+  border-color: var(--gs-ink);
+  box-shadow: 0 10px 22px -14px rgba(16, 20, 17, 0.7);
+  transition:
+    background 0.25s ease,
+    box-shadow 0.3s ease,
+    transform 0.35s var(--gs-spring);
+}
+.st-btn.primary:hover:not(:disabled) {
+  background: var(--gs-brand);
+  border-color: var(--gs-brand);
+  box-shadow: 0 14px 28px -14px rgba(31, 74, 54, 0.75);
+}
+.st-btn.primary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.st-btn.big {
+  height: 42px;
+  padding: 0 22px;
+}
+
+@media (max-width: 900px) {
+  .st-rail {
+    margin: 0;
+    border-radius: 0;
+    width: auto;
+  }
+}
+
+/* the floating Talk / Ask GeoStar buttons sit bottom-right: leave room so the last card's actions scroll clear */
+.st-page {
+  padding-bottom: 96px;
+}

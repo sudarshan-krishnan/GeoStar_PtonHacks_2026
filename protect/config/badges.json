@@ -1,0 +1,6 @@
+{
+  "_README": "RFID cards for the lobby panel (board 2). Tap a card: the terminal and dashboard show its UID. Put the building manager's card UID in 'managers' (or press 'Make this the manager card' on the dashboard). A manager tap approves whatever the AI is waiting on. Any other card counts as the dispatched vendor checking in; with no vendor expected it is refused.",
+  "managers": [
+    "20111B5C"
+  ]
+}

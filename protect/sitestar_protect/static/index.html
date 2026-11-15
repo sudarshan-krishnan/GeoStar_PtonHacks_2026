@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiteStar Protect</title>
+<style>
+  :root { --bg:#f4f5f7; --card:#fff; --ink:#17202b; --mute:#5c6776; --line:#dbe0e6;
+          --ok:#1f7a52; --okbg:#e3f3ea; --warn:#a65f00; --warnbg:#fbeed6; --bad:#b0362c; --badbg:#fbe4e1;
+          --accent:#3b5bdb; --bubble:#e9ecf1; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f141b; --card:#18202a; --ink:#e7ecf2; --mute:#97a3b1; --line:#2a3441;
+            --ok:#4cc38a; --okbg:#173326; --warn:#f2a93b; --warnbg:#3a2a10; --bad:#ff6b5e; --badbg:#3d1b18;
+            --accent:#8ea2ff; --bubble:#232d39; }
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui, sans-serif; padding:16px }
+  h1 { font-size:19px; margin:0 } h2 { font-size:13px; margin:0 0 8px; color:var(--mute); font-weight:600; text-transform:uppercase; letter-spacing:.04em }
+  .top { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between }
+  .chips { display:flex; flex-wrap:wrap; gap:6px }
+  .chip { border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-size:12px; background:var(--card) }
+  .chip.ok { color:var(--ok); border-color:var(--ok) } .chip.bad { color:var(--bad); border-color:var(--bad) } .chip.warn { color:var(--warn); border-color:var(--warn) }
+  .grid { display:grid; gap:12px; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(280px,.8fr); margin-top:12px }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; min-width:0 }
+  svg text { font-size:10px; fill:var(--ink) }
+  .floor-label { font-size:11px; fill:var(--mute) }
+  .inc { border:1px solid var(--line); border-radius:8px; padding:8px; margin-bottom:8px; cursor:pointer }
+  .inc.critical { border-left:4px solid var(--bad) } .inc.warning { border-left:4px solid var(--warn) }
+  .inc .meta { color:var(--mute); font-size:12px }
+  .trace { max-height:340px; overflow:auto; font-size:12.5px }
+  .trace div { padding:3px 0; border-bottom:1px dashed var(--line) }
+  .who { font-weight:600; color:var(--accent) } .k-approval { color:var(--warn) } .k-human { color:var(--ok) } .k-error { color:var(--bad) }
+  .phone { display:flex; flex-direction:column; height:520px }
+  .msgs { flex:1; overflow:auto; display:flex; flex-direction:column; gap:6px; padding:4px }
+  .b { max-width:88%; padding:7px 10px; border-radius:14px; background:var(--bubble); font-size:13px; white-space:pre-wrap }
+  .b.out { align-self:flex-start } .b.in { align-self:flex-end; background:var(--accent); color:#fff }
+  .b.alert { background:var(--badbg) } .b.approval { background:var(--warnbg) }
+  .b small { display:block; opacity:.65; font-size:10.5px; margin-top:2px }
+  .row { display:flex; gap:6px; margin-top:8px }
+  input { flex:1; min-width:0; font:inherit; padding:7px 10px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--ink) }
+  button { font:inherit; padding:6px 10px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer }
+  button.yes { border-color:var(--ok); color:var(--ok) } button.no { border-color:var(--bad); color:var(--bad) }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:2px 10px; font-size:12.5px } .kv span:nth-child(odd) { color:var(--mute) }
+  pre { white-space:pre-wrap; font-size:12px; background:var(--bg); padding:8px; border-radius:6px; max-height:260px; overflow:auto }
+  .sim button { margin:2px }
+  .matrix { display:flex; align-items:center; gap:10px; background:#111; color:#ff5a4f; border-radius:8px; padding:10px 12px; font:700 15px/1.2 ui-monospace,Menlo,monospace; letter-spacing:1px; overflow:hidden; white-space:nowrap; margin-top:6px }
+  .matrix .ic { font-size:22px; flex:none }
+  .matrix .tx { overflow:hidden; flex:1 }
+</style>
+</head>
+<body>
+<div class="top">
+  <div><h1 id="title">SiteStar Protect</h1><div style="color:var(--mute)" id="sub">connecting…</div></div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Digital twin: floor plan from Design</h2>
+    <svg id="plan" viewBox="0 0 430 300" width="100%"></svg>
+    <div style="font-size:12px;color:var(--mute);margin-top:6px">Green = normal · amber = warning · red = alarm · outlined = sensor on the physical model</div>
+    <h2 style="margin-top:12px">Data hall power <span id="gridChip" style="text-transform:none"></span></h2>
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+      <div style="font-size:34px;font-weight:700" id="pwTotal">-- W</div>
+      <div style="font-size:12.5px;color:var(--mute)" id="pwSplit"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px">
+      <span id="fanIcon" style="display:inline-block;font-size:20px">🌀</span><b>Cooling fan</b>
+      <div style="flex:1;height:14px;border-radius:7px;background:var(--line);overflow:hidden"><div id="fanFill" style="height:100%;width:0;background:#1e88e5;transition:width .6s"></div></div>
+      <b id="fanPct" style="min-width:44px;text-align:right">--%</b>
+    </div>
+    <svg id="pwSpark" viewBox="0 0 300 60" width="100%" height="60" style="margin-top:4px"></svg>
+    <div class="row"><button id="gridGo">Grid event (keypad A)</button><button id="gridEnd">End event (B)</button></div>
+    <div id="gridResult" style="font-size:12.5px;margin-top:6px"></div>
+    <h2 style="margin-top:12px">Live sensors</h2>
+    <div class="kv" id="live"></div>
+    <div class="sim" id="sim" style="margin-top:10px;display:none">
+      <h2>Fake board controls</h2>
+      <button data-k="w">Water on leak sensor</button><button data-k="s">Smoke in beam</button><button data-k="p">Person in lounge</button>
+      <button data-k="h">Heat DHT11</button><button data-k="b">Breathe on DHT11</button><button data-k="i">Ice on pipe</button>
+      <button data-k="f">Sump flood</button><button data-k="j">Jam valve arm</button><button data-k="c">Clear all</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Incidents</h2>
+    <div id="incidents"><div style="color:var(--mute)">No incidents. All clear.</div></div>
+    <h2 style="margin-top:12px">AI incident commander <span id="mode"></span></h2>
+    <div class="trace" id="trace"></div>
+    <h2 style="margin-top:12px">Dossier <span id="dossierId" style="text-transform:none"></span></h2>
+    <div id="files" style="color:var(--mute);font-size:12px">Click an incident to read the files the agent wrote.</div>
+  </div>
+
+  <div class="card phone">
+    <h2>Building manager's phone <span id="channel" style="text-transform:none"></span></h2>
+    <div class="msgs" id="msgs"></div>
+    <div class="row"><button class="yes" id="yes">YES</button><button class="no" id="no">NO</button></div>
+    <div class="row"><input id="ask" placeholder="Text the agent… (e.g. what happened?)"><button id="send">Send</button></div>
+    <h2 style="margin-top:14px">Badge reader (RFID approval) <span id="lobbyPort" style="text-transform:none"></span></h2>
+    <div class="matrix"><span class="ic" id="pIcon">🏠</span><span class="tx" id="pText">ALL CLEAR</span></div>
+    <div id="badgeInfo" style="font-size:12px;color:var(--mute);margin-top:6px">No badge tapped yet.</div>
+    <div class="row"><button id="tapMgr">Tap manager card</button><button id="tapOther">Tap plumber fob</button><button id="mkMgr" style="display:none">Make this the manager card</button></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hhmmss = t => new Date(t * 1000).toLocaleTimeString([], {hour12:false});
+const reply = text => fetch('/api/manager/reply', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text, channel:'dashboard'})});
+$('yes').onclick = () => reply('YES'); $('no').onclick = () => reply('NO');
+$('send').onclick = () => { const v = $('ask').value.trim(); if (v) { reply(v); $('ask').value = ''; } };
+$('ask').onkeydown = e => { if (e.key === 'Enter') $('send').click(); };
+document.querySelectorAll('#sim button').forEach(b => b.onclick = () => fetch('/api/sim/key/' + b.dataset.k, {method:'POST'}));
+$('tapMgr').onclick = () => fetch('/api/badge/MANAGER', {method:'POST'});
+$('tapOther').onclick = () => fetch('/api/badge/A1B2C3D4', {method:'POST'});
+let lastUid = null;
+$('mkMgr').onclick = () => lastUid && fetch('/api/badges/manager/' + lastUid, {method:'POST'});
+$('gridGo').onclick = () => fetch('/api/grid/request', {method:'POST'});
+$('gridEnd').onclick = () => fetch('/api/grid/end', {method:'POST'});
+let fanSpin = 0, fanLast = performance.now(), fanLevel = 0;
+(function spin(t) { fanSpin = (fanSpin + (t - fanLast) * fanLevel * 1.2) % 360; fanLast = t;
+  const el = document.getElementById('fanIcon'); if (el) el.style.transform = `rotate(${fanSpin}deg)`; requestAnimationFrame(spin); })(performance.now());
+function renderPower(p) {
+  const g = p.grid;
+  fanLevel = p.fan;
+  $('fanFill').style.width = Math.round(p.fan * 100) + '%';
+  $('fanFill').style.background = p.fan >= 0.95 ? '#e53935' : p.fan <= 0.25 ? '#43a047' : '#1e88e5';
+  $('fanPct').textContent = Math.round(p.fan * 100) + '%';
+  $('pwTotal').textContent = p.total_w == null ? '-- W' : p.total_w.toFixed(1) + ' W';
+  $('pwSplit').innerHTML = `Servers (laptop) <b>${p.it_w == null ? '--' : p.it_w.toFixed(1) + ' W'}</b> <i title="${esc(p.it_source || '')}">${p.it_measured ? 'measured · ' + esc(p.it_source || '') : 'no reading'}</i>` +
+    ` · Cooling fan <b>${p.fan_w.toFixed(2)} W</b> <i>estimated</i> (${Math.round(p.fan * 100)}%)` +
+    (p.jobs_total ? ` · AI jobs running <b>${p.jobs_running}/${p.jobs_total}</b>` : '');
+  const chip = {normal: ['ok', 'grid normal'], requested: ['warn', `grid event: approve ${g.depth}% cut?`], active: ['bad', `GRID EVENT −${g.depth}%`]}[g.state];
+  $('gridChip').innerHTML = `<span class="chip ${chip[0]}">${chip[1]}</span>` + (g.typed ? ` <span class="chip">typing ${esc(g.typed)}%</span>` : '');
+  const r = g.result;
+  $('gridResult').innerHTML = r ? `Last grid event: <b>${r.before_w} W → ${r.during_w} W</b> (−${r.cut_pct}%) over ${r.minutes} min · jobs resumed` : '';
+  const h = p.history; if (h.length > 1) {
+    const ws = h.map(x => x[1]), lo = Math.min(...ws) * 0.9, hi = Math.max(...ws) * 1.05 || 1, t0 = h[0][0], t1 = h[h.length - 1][0] || t0 + 1;
+    const pts = h.map(([t, w]) => `${(300 * (t - t0) / Math.max(1, t1 - t0)).toFixed(1)},${(58 - 54 * (w - lo) / Math.max(0.1, hi - lo)).toFixed(1)}`).join(' ');
+    $('pwSpark').innerHTML = `<polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2"/>` +
+      `<text x="2" y="10" font-size="9" fill="currentColor" opacity=".6">${hi.toFixed(0)} W</text><text x="2" y="58" font-size="9" fill="currentColor" opacity=".6">${lo.toFixed(0)} W · last ${Math.round((t1 - t0) / 60)} min</text>`;
+  }
+}
+const ICON = {idle:'🏠',bolt:'⚡', drop:'💧', fire:'🔥', check:'✅', cross:'⛔', wait:'⏳', wrench:'🔧'};
+
+let building = null, selected = null, lastMsgCount = -1;
+fetch('/api/building').then(r => r.json()).then(b => { building = b; $('title').textContent = b.project.name; $('sub').textContent = `${b.project.city} · ${b.project.beds} beds · ${b.project.parcel_source}`; });
+
+function drawPlan(s) {
+  if (!building) return;
+  const cls = {0:['var(--okbg)','var(--ok)'], 1:['var(--warnbg)','var(--warn)'], 2:['var(--badbg)','var(--bad)']};
+  const physical = new Set(Object.values(building.hardware_map));
+  const floors = [...new Set(building.rooms.map(r => r.floor))].sort((a, b) => b - a);
+  const maxW = Math.max(...building.rooms.map(r => r.x + r.w));
+  const sx = 426 / maxW, sy = 6.5, gap = 22;
+  let out = '', y0 = 14;
+  floors.forEach(f => {
+    const rooms = building.rooms.filter(r => r.floor === f);
+    const depth = Math.max(...rooms.map(r => r.y + r.h));
+    out += `<text class="floor-label" x="0" y="${y0 - 4}">${f === 0 ? 'Basement' : 'Floor ' + f}</text>`;
+    rooms.forEach(r => {
+      const st = s.rooms[r.id] ?? 0, [fill, stroke] = cls[st];
+      const x = r.x * sx + 2, y = y0 + r.y * sy, w = r.w * sx - 3, h = r.h * sy - 3;
+      out += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${physical.has(r.id) ? 2.2 : 0.8}"/>`;
+      out += `<text x="${x + 5}" y="${y + 13}">${esc(r.name.replace(/ \(.+\)/, ''))}</text>`;
+      const plan = building.plan.filter(p => p.room === r.id).map(p => ({leak:'💧', shutoff_valve:'🔧', smoke:'🔥', heat:'🌡', temp_humidity:'💨', occupancy:'👤', electrical:'⚡'}[p.kind] || '•') + (p.count > 1 ? p.count : '')).join(' ');
+      if (h > 30) out += `<text x="${x + 5}" y="${y + h - 6}">${plan}</text>`;
+    });
+    y0 += depth * sy + gap;
+  });
+  $('plan').setAttribute('viewBox', `0 0 430 ${Math.ceil(y0 - gap + 6)}`);
+  $('plan').innerHTML = out;
+}
+
+function render(s) {
+  drawPlan(s);
+  if (s.power) renderPower(s.power);
+  const hw = s.hardware, ag = s.agent || {}, ph = s.phone;
+  const bridge = ph.bridge_ok === true ? ['ok', 'iMessage live'] : ph.bridge_ok === false ? ['warn', 'iMessage bridge offline: dashboard phone'] : ['', 'iMessage: waiting'];
+  $('chips').innerHTML = `<span class="chip ${hw.connected ? 'ok' : 'bad'}">ESP32 ${hw.connected ? 'connected ' + esc(hw.port) : 'not connected'}</span>` +
+    `<span class="chip ${ag.mode === 'offline' ? 'warn' : 'ok'}">AI: ${esc(ag.mode === 'offline' ? 'OFFLINE playbook' : 'Claude via ' + ag.mode)}</span>` +
+    `<span class="chip ${s.team_app.ok ? 'ok' : s.team_app.ok === false ? 'bad' : ''}" title="${esc(s.team_app.error || s.team_app.last || '')}">Team app ${s.team_app.ok ? '✓ ' + esc(s.team_app.facility || '') : s.team_app.ok === false ? 'not reached' : 'waiting for first event'}</span>` +
+    `<span class="chip ${bridge[0]}">${bridge[1]}</span>`;
+  const lb = s.lobby, b = lb.last_badge;
+  $('pIcon').textContent = ICON[lb.panel[0]] || '🏠'; $('pText').textContent = lb.panel[1];
+  $('lobbyPort').textContent = lb.connected ? '(UNO R4 ' + lb.port + ')' : (s.hardware.connected ? '(on the ESP32)' : '');
+  if (b) {
+    lastUid = b.uid;
+    $('badgeInfo').innerHTML = `Last tap ${hhmmss(b.t)}: card <b>${esc(b.uid)}</b> · ${b.role === 'manager' ? 'manager card' : 'not a manager card'} · ${esc(b.result)}`;
+    $('mkMgr').style.display = b.role !== 'manager' && /^[0-9A-F]{4,20}$/.test(b.uid) ? '' : 'none';
+  }
+  $('mode').textContent = ag.mode ? `(${ag.mode})` : '';
+  const l = s.live;
+  const vsw = l.valve_switch_confirms_shut;
+  const valve = l.valve_open ? 'OPEN' : 'CLOSED' + (vsw === true ? ' · switch confirms ✓' : vsw === false ? ' · SWITCH SAYS NOT SHUT ✗' : '');
+  const rows = [['Valve', valve], ['Leak sensor', l.leak_wet ? 'WET' : 'dry'], ['Fire door', l.fire_door_open === false ? 'SHUT' : 'open'],
+    ['Water saved', (l.water_saved_l || 0) >= 1 ? Math.round(l.water_saved_l) + ' L' : '--'], ['Smoke beam', l.smoke ? 'BLOCKED' : (l.smoke_beam_pct ?? '--') + '%'],
+    ['Mech room', l.mech_temp_c == null ? '--' : `${l.mech_temp_c} °C · ${l.mech_rh_pct} %RH`], ['Pipe', l.pipe_c == null ? '--' : l.pipe_c + ' °C'],
+    ['Sump', l.sump_cm == null ? '--' : l.sump_cm + ' cm'], ['Lounge', l.lounge_occupied ? 'occupied' : 'empty'], ['Fan / strobe', `${Math.round((l.fan || 0) * 100)}% / ${l.strobe ? 'ON' : 'off'}`]];
+  $('live').innerHTML = rows.map(([k, v]) => `<span>${k}</span><span>${esc(v)}</span>`).join('');
+  $('incidents').innerHTML = s.incidents.length ? s.incidents.slice(0, 6).map(i => `<div class="inc ${i.severity}" data-id="${i.id}">
+      <b>${esc(i.title)}</b> · ${esc(i.room_name)} <span class="meta">${i.id} · ${hhmmss(i.started)} · ${i.status} · AI ${esc(i.agent_state)}</span>
+      <div class="meta">${i.reflex.map(r => '⚡ ' + esc(r.action)).join(' · ')}${i.work_order ? ' · 🧾 ' + i.work_order : ''}</div></div>`).join('')
+    : '<div style="color:var(--mute)">No incidents. All clear.</div>';
+  document.querySelectorAll('.inc').forEach(el => el.onclick = () => { selected = el.dataset.id; loadFiles(); });
+  $('trace').innerHTML = (ag.trace || []).slice(-60).map(t => `<div class="k-${t.kind}">${hhmmss(t.t)} <span class="who">${esc(t.who)}</span> ${esc(t.text)}</div>`).join('');
+  $('trace').scrollTop = 1e9;
+  const m = ph.transcript;
+  if (m.length !== lastMsgCount) {
+    lastMsgCount = m.length;
+    $('msgs').innerHTML = m.map(x => `<div class="b ${x.dir} ${x.kind || ''}">${esc(x.text)}<small>${hhmmss(x.t)} · ${x.dir === 'in' ? 'you' : 'SiteStar'} · ${esc(x.channel)}</small></div>`).join('');
+    $('msgs').scrollTop = 1e9;
+  }
+  $('channel').textContent = ph.bridge_ok ? '(iMessage via Photon)' : '(dashboard)';
+  const pending = (ag.pending || []).length > 0;
+  $('yes').disabled = $('no').disabled = !pending;
+  $('yes').style.opacity = $('no').style.opacity = pending ? 1 : 0.4;
+  $('yes').title = $('no').title = pending ? ag.pending[ag.pending.length - 1].lines[0] : 'Nothing waiting for approval';
+  if (!selected && s.incidents.length) selected = s.incidents[0].id;
+}
+
+async function loadFiles() {
+  if (!selected) return;
+  $('dossierId').textContent = selected;
+  const r = await fetch(`/api/incidents/${selected}/files`).then(r => r.json());
+  $('files').innerHTML = r.files.length ? r.files.map(f => `<b>${esc(f.name)}</b><pre>${esc(f.text)}</pre>`).join('') : 'The agent has not written files for this incident yet.';
+}
+setInterval(loadFiles, 3000);
+
+fetch('/api/state').then(r => r.json()).then(s => { if (s.sim) $('sim').style.display = 'block'; });
+function connect() {
+  const ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.onmessage = e => { const s = JSON.parse(e.data); if (s.sim) $('sim').style.display = 'block'; render(s); };
+  ws.onclose = () => { $('sub').textContent = 'PROTECT server not reachable, retrying…'; setTimeout(connect, 1500); };
+}
+connect();
+</script>
+</body>
+</html>

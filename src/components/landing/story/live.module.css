@@ -1,0 +1,74 @@
+/* Live hardware panel inside the Protect act (night). Uses the story's tokens: --lime, --coral,
+   --amber, --sky, --night-ink, --night-mute, --night-line, --mono, --serif, --ease. */
+.live { margin-top: 72px; }
+.head { max-width: 720px; margin-bottom: 30px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(201, 236, 122, 0.6); animation: pulse 1.6s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(201, 236, 122, 0); } 100% { box-shadow: 0 0 0 0 rgba(201, 236, 122, 0); } }
+.head h3 { font-size: clamp(26px, 3.2vw, 42px); color: #fff; letter-spacing: -0.035em; }
+.head h3 em { color: var(--lime); }
+.head p { margin-top: 12px; color: var(--night-mute); font-size: 15.5px; line-height: 1.55; }
+
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1180px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .grid { grid-template-columns: minmax(0, 1fr); } .live { margin-top: 48px; } }
+
+.card { border-radius: 22px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: border-color 0.4s, box-shadow 0.4s; }
+.card.alert { border-color: rgba(234, 106, 79, 0.55); box-shadow: 0 0 0 1px rgba(234, 106, 79, 0.2), 0 20px 50px -24px rgba(234, 106, 79, 0.55); }
+.card.warn { border-color: rgba(232, 163, 61, 0.5); }
+.card.ok { border-color: rgba(201, 236, 122, 0.35); }
+.cardHead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cardHead span { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--night-mute); }
+.cardHead em { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: 0.02em; color: var(--lime); border: 1px solid var(--night-line); border-radius: 999px; padding: 2px 9px; white-space: nowrap; }
+.alert .cardHead em { color: var(--coral); border-color: rgba(234, 106, 79, 0.45); }
+.warn .cardHead em { color: var(--amber); border-color: rgba(232, 163, 61, 0.45); }
+
+.big { font-family: var(--mono); font-size: 38px; font-weight: 500; line-height: 1; letter-spacing: -0.04em; color: #fff; font-variant-numeric: tabular-nums; }
+.big span { font-family: var(--sans, inherit); font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--night-mute); margin-left: 6px; }
+.mid { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: #fff; }
+.card small { font-size: 12.5px; color: var(--night-mute); line-height: 1.45; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair > div { display: grid; gap: 6px; }
+
+.rows { display: grid; gap: 5px; margin: 0; font-size: 13px; }
+.rows > div { display: flex; justify-content: space-between; gap: 10px; }
+.rows dt { color: var(--night-mute); }
+.rows dt i { font-style: normal; font-size: 10.5px; color: var(--amber); letter-spacing: 0.04em; }
+.rows dd { margin: 0; font-family: var(--mono); font-size: 12.5px; color: var(--night-ink); text-align: right; font-variant-numeric: tabular-nums; }
+.rows dd.good { color: var(--lime); }
+.rows dd.bad { color: var(--coral); }
+
+.spark { width: 100%; height: 52px; display: block; }
+.sparkLine { fill: none; stroke: var(--lime); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.sparkFill { fill: rgba(201, 236, 122, 0.1); }
+
+.fanRow { display: flex; align-items: center; gap: 14px; }
+.fan { width: 42px; height: 42px; fill: var(--lime); animation: spin linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.bar { height: 6px; border-radius: 9px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: inherit; background: var(--lime); transition: width 0.8s var(--ease); }
+
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 2px; }
+.controls input[type='range'] { flex: 1; min-width: 80px; accent-color: #c9ec7a; }
+.live .btn { height: 34px; padding: 0 14px; border-radius: 999px; background: var(--lime); color: var(--night); font-size: 13px; font-weight: 600; }
+.live .btn:hover:not(:disabled) { background: #d8f493; }
+.live .ghost { height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--night-line); color: var(--night-ink); font-size: 13px; }
+.live .btn:disabled, .live .ghost:disabled { opacity: 0.5; }
+
+.trace { display: grid; gap: 4px; font-size: 12px; color: var(--night-mute); }
+.trace li { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.trace span { font-family: var(--mono); font-size: 11px; color: rgba(233, 239, 231, 0.45); }
+.msg { border-radius: 14px; background: rgba(201, 236, 122, 0.08); border: 1px solid rgba(201, 236, 122, 0.18); padding: 9px 11px; font-size: 12.5px; color: var(--night-ink); line-height: 1.45; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+.msg span { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lime); margin-bottom: 3px; }
+
+.foot { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 18px; font-size: 12px; color: var(--night-mute); }
+.on::before, .offDot::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; }
+.on::before { background: var(--lime); }
+.offDot::before { background: var(--coral); }
+
+.offline { margin-top: 40px; border-radius: 18px; padding: 14px 18px; font-size: 13.5px; color: var(--night-mute); display: flex; align-items: center; gap: 10px; }
+.off { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--night-mute); }
+
+/* "Live" chip that replaces the simulate button while the hardware is connected */
+.liveChip { display: flex; align-items: center; gap: 10px; border-radius: 18px; padding: 13px 16px; font-size: 13.5px; color: var(--night-ink); line-height: 1.4; }
+.liveChip b { color: var(--lime); }

@@ -1,0 +1,53 @@
+/* Studio · Analyze sub-tabs (Compare · Analyze · Decide): Define's tabs plus a liquid-glass lens that glides between them. */
+.st-tabs-glass { position: relative; isolation: isolate; }
+.st-tabs-glass button { position: relative; z-index: 1; }
+/* the lens draws the active outline, so the active button drops its own */
+.st-tabs-glass button.on { border-color: var(--st-hair); box-shadow: var(--st-shadow-1); }
+.st-tabs-lens {
+  position: absolute; z-index: 2; pointer-events: none;
+  left: 0; top: 0; width: var(--gw, 0); height: var(--gh, 0);
+  transform: translate(var(--gx, 0), var(--gy, 0));
+  border-radius: 10px;
+  border: 1px solid rgba(52, 102, 75, 0.45);
+  /* clear glass: a top sheen only, so the label underneath stays sharp */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%);
+  box-shadow: 0 0 0 3px rgba(52, 102, 75, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 6px 16px -8px rgba(38, 77, 57, 0.35);
+}
+.st-tabs-glass.is-gliding .st-tabs-lens {
+  transition: transform 0.46s var(--st-ease, cubic-bezier(0.2, 0.8, 0.2, 1)), width 0.46s var(--st-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+  animation: st-lens-squish 0.46s var(--st-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+@keyframes st-lens-squish {
+  40% { border-radius: 14px; box-shadow: 0 0 0 5px rgba(52, 102, 75, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 22px -8px rgba(38, 77, 57, 0.4); }
+}
+
+/* sub-page content settles in through frosted glass */
+.st-glass-in { animation: st-glass-in 0.42s var(--st-ease, cubic-bezier(0.2, 0.8, 0.2, 1)) both; }
+@keyframes st-glass-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.996); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+/* filter on the page would trap fixed-position children (dialogs) inside it, so drop it once settled */
+.st-glass-in { animation-fill-mode: backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .st-tabs-glass.is-gliding .st-tabs-lens, .st-glass-in { transition: none; animation: none; }
+}
+
+/* collapsible cards (Compare · Side by side, Analyze · Checks): closed by default, a one-line summary when closed */
+.st-fold > summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; margin: -4px 0; padding: 4px 0; border-radius: 8px; }
+.st-fold > summary::-webkit-details-marker { display: none; }
+.st-fold > summary h3 { margin: 0; }
+.st-fold > summary::after {
+  content: ''; margin-left: auto; flex: none; width: 7px; height: 7px; border-right: 1.5px solid var(--st-muted); border-bottom: 1.5px solid var(--st-muted);
+  transform: rotate(45deg) translateY(-2px); transition: transform 0.2s var(--st-ease, ease);
+}
+.st-fold[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
+.st-fold > summary:hover h3 { color: var(--st-accent); }
+.st-fold > summary:focus-visible { outline: 2px solid var(--st-accent-2); outline-offset: 4px; }
+.st-fold[open] > summary { margin-bottom: 12px; }
+.st-fold-meta { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--st-muted); }
+.st-fold-meta.ok { color: var(--st-ok); }
+.st-fold-meta.bad { color: var(--st-bad); }
+.st-fold[open] > :not(summary) { animation: st-fold-in 0.28s var(--st-ease, ease) both; }
+@keyframes st-fold-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }

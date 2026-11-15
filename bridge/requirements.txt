@@ -1,0 +1,5 @@
+flask>=3.0
+numpy>=1.24
+anthropic>=2.8      # inspection agent (optional: without credentials the site runs rules-only)
+opencv-python>=4.8  # video frames (imported by the bridge)
+djitellopy>=2.5     # drone (optional, --drone)

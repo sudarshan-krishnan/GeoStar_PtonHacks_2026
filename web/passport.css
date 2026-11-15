@@ -1,0 +1,65 @@
+/* The passport: one sheet, readable on screen, clean on paper. */
+
+.pp-page { background: var(--wash); }
+.pp-tools { display: flex; justify-content: space-between; gap: 12px; padding: 18px 0 0; }
+.sheet {
+  width: min(900px, 100% - 32px); margin: 16px auto 48px; background: var(--card);
+  border: 1px solid var(--hair); border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 40px;
+}
+.pp-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.pp-brand { display: flex; align-items: center; gap: 14px; }
+.pp-meta { font-size: 12.5px; color: var(--muted); }
+.pp-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-top: 22px; }
+.pp-title h1 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.035em; }
+.pp-sub { color: var(--ink-2); margin-top: 6px; font-size: 14.5px; }
+.pp-title .verdict-badge { flex: none; margin-top: 6px; }
+.pp-headline { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.35; margin-top: 16px; }
+.pp-headline .fine { font-weight: 400; letter-spacing: 0; }
+.pp-images { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.pp-images figure { margin: 0; }
+.pp-images img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; background: #0b0b0b; }
+.pp-images figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.pp-cols { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; margin-top: 26px; }
+.sheet h2 { font-size: 16px; letter-spacing: -0.01em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--hair); }
+.sheet h3 { font-size: 14px; margin: 14px 0 4px; }
+.sheet ul { margin: 6px 0 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 4px; }
+.pp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pp-table td { padding: 5px 4px; border-bottom: 1px solid var(--hair-2); vertical-align: middle; }
+.pp-ic { width: 22px; }
+.pp-ic svg { width: 13px; height: 13px; }
+.ck-pass .pp-ic, .ck-pass .pp-w { color: var(--good-text); }
+.ck-work .pp-ic, .ck-work .pp-w { color: #8a5a00; }
+.ck-fail .pp-ic, .ck-fail .pp-w { color: var(--critical); }
+.ck-unknown .pp-ic, .ck-unknown .pp-w { color: var(--muted); }
+.pp-v { font-weight: 500; }
+.pp-w { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; }
+.pp-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0 0 10px; font-size: 13.5px; }
+.pp-dl dt { color: var(--muted); }
+.pp-dl dd { margin: 0; font-weight: 500; }
+.pp-obs li strong { font-weight: 600; }
+.pp-ver-head { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+.pp-ok { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: rgba(12, 163, 12, 0.12); color: var(--good-text); }
+.pp-ok svg { width: 14px; height: 14px; }
+.pp-foot { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--hair); font-size: 11.5px; color: var(--muted); display: grid; gap: 4px; }
+
+.pp-caps { margin-top: 24px; break-inside: avoid; }
+.pp-caps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pp-caps-grid figure { margin: 0; }
+.pp-caps-grid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; background: #0b0b0b; }
+.pp-caps-grid figcaption { font-size: 11.5px; color: var(--muted); margin-top: 4px; display: flex; gap: 6px; align-items: center; }
+
+@media (max-width: 760px) {
+  .sheet { padding: 22px 18px; }
+  .pp-images, .pp-cols { grid-template-columns: 1fr; }
+  .pp-title { flex-direction: column; }
+}
+
+@media print {
+  @page { size: letter; margin: 0.45in; }
+  .pp-page { background: #fff; }
+  .pp-tools { display: none; }
+  .sheet { width: auto; margin: 0; border: 0; box-shadow: none; padding: 0; }
+  .pp-images img { aspect-ratio: 16 / 9; }
+  .pp-cols, .pp-images, .pp-table tr { break-inside: avoid; }
+  body { font-size: 12px; }
+}

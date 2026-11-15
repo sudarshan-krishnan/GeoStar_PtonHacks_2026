@@ -1,0 +1,38 @@
+{
+  "_README": "PLACEHOLDER VALUES. Replace with real numbers from CoStar (parcel), WRI Aqueduct 4.0 (water stress), OpenStreetMap power=substation + utility (headroom) and census/parcel data (homes) before the demo. Keypad A/B/C picks the site.",
+  "facility_mw": 300,
+  "limits": {
+    "max_homes_within_1km_with_diesel": 50,
+    "water_cooling_banned_stress": ["high", "extremely high"]
+  },
+  "cooling": {
+    "water": {"pue": 1.15, "water_l_per_kwh": 1.8, "label": "evaporative (water)"},
+    "air":   {"pue": 1.40, "water_l_per_kwh": 0.0, "label": "dry / air-cooled"}
+  },
+  "sites": {
+    "A": {
+      "name": "Parcel A (cheapest land)",
+      "land_cost_musd": 18,
+      "homes_within_1km": 340,
+      "water_stress": "extremely high",
+      "substation_km": 1.2,
+      "headroom_mw": {"0": 120, "0.25": 200, "0.5": 260, "1": 320}
+    },
+    "B": {
+      "name": "Parcel B (PlotStar pick)",
+      "land_cost_musd": 26,
+      "homes_within_1km": 12,
+      "water_stress": "medium-high",
+      "substation_km": 0.8,
+      "headroom_mw": {"0": 180, "0.25": 310, "0.5": 360, "1": 420}
+    },
+    "C": {
+      "name": "Parcel C (far from grid)",
+      "land_cost_musd": 21,
+      "homes_within_1km": 3,
+      "water_stress": "low-medium",
+      "substation_km": 6.5,
+      "headroom_mw": {"0": 90, "0.25": 150, "0.5": 220, "1": 305}
+    }
+  }
+}

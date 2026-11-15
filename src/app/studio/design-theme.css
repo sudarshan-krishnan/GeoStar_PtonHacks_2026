@@ -1,0 +1,128 @@
+/* ==========================================================================
+   Studio theme for the Smart Blocks screens shown in Design (Model · Protect · Deploy).
+   The components and their stylesheets are shared with /dashboard-2 and stay untouched there;
+   inside Studio they wear GeoStar's palette: forest green for actions and selection, warm
+   off-white surfaces, mono small-caps labels, Studio buttons, cards and tags.
+   Every rule is scoped to .st .st-twin-host, so /dashboard-2 never sees it.
+   ========================================================================== */
+
+.st .d2-shell.sb.st-twin-host {
+  /* Smart Blocks tokens → Studio palette */
+  --sb-bg: var(--st-bg);
+  --sb-surface: #ffffff;
+  --sb-subtle: #f7f8f4;
+  --sb-ink: var(--st-ink);
+  --sb-ink-2: var(--st-ink-2);
+  --sb-muted: var(--st-muted);
+  --sb-faint: #9aa39d;
+  --sb-border: var(--st-line);
+  --sb-border-muted: #e4e8e0;
+  --sb-hair: var(--st-line-2);
+  /* amber means "warning" as well as "action" in Smart Blocks: it maps to Studio's warning amber,
+     and the action pieces (buttons, kickers) are restyled green below */
+  --sb-amber: #c08a2e;
+  --sb-amber-hi: #d9a548;
+  --sb-amber-strong: var(--st-warn);
+  --sb-amber-deep: #7c5a14;
+  --sb-amber-soft: #faf4e5;
+  --sb-amber-line: #e2d3b0;
+  /* blue was selection / healthy: Studio's green, a step lighter */
+  --sb-blue: var(--st-ok);
+  --sb-blue-hi: #5f9a78;
+  --sb-blue-strong: var(--st-accent);
+  --sb-blue-soft: #eef5ee;
+  --sb-blue-line: #b9d2bf;
+  --sb-red: var(--st-bad);
+  --sb-red-soft: #fbeeec;
+  --sb-red-line: #e6c2bd;
+  --sb-glass: rgba(255, 255, 255, 0.72);
+  --sb-edge: var(--st-line);
+  --sb-lift: var(--st-shadow-1);
+  --sb-lift-hover: 0 1px 2px rgba(24, 35, 29, 0.06), 0 6px 16px -6px rgba(24, 35, 29, 0.14);
+  --sb-blue-ring: 0 0 0 1px var(--st-accent-2), 0 0 0 4px rgba(52, 102, 75, 0.12);
+  --sb-radius: 10px;
+  --sb-radius-sm: 8px;
+  --ink: var(--st-ink);
+  --muted: var(--st-muted);
+  --line: var(--st-line-2);
+  --forest: var(--st-accent);
+  --primary: var(--st-accent-2);
+  --lime: var(--st-tint);
+  --cream: #f7f8f4;
+  font-family: inherit;
+  color: var(--st-ink);
+}
+.st .st-twin-host :is(button, a, input, textarea, select):focus-visible { outline: 2px solid var(--st-accent-2); outline-offset: 2px; }
+
+/* ---------------------------------------------------------------- cards and type */
+.st .st-twin-host .d2-primary {
+  background: var(--st-panel); border: 1px solid var(--st-line); border-radius: 10px; padding: 22px 24px;
+  box-shadow: var(--st-shadow-1); -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.st .st-twin-host :is(h1, h2, h3) { color: var(--st-ink); font-family: inherit; }
+.st .st-twin-host h1 { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
+.st .st-twin-host h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.st .st-twin-host .d2-lede { color: #4a5650; font-size: 14px; line-height: 1.55; }
+.st .st-twin-host .d2-card-top { margin-bottom: 12px; }
+/* kickers, overlines, indexes and small labels: Studio's mono small caps */
+.st .st-twin-host :is(.d2-kicker, .d2-overline, .d2-card-index, .hv-section-heading > span, .al-section-title, .cc-label) {
+  font-family: var(--st-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.st .st-twin-host .d2-kicker { padding: 0; border: 0; background: none; color: var(--st-accent-2); line-height: 1.4; }
+.st .st-twin-host .d2-kicker > span { background: var(--st-accent-2); }
+.st .st-twin-host :is(.d2-overline, .d2-card-index) { color: var(--st-muted); }
+
+/* tags: Studio's soft pills */
+.st .st-twin-host :is(.d2-sample-tag, .hv-mode, .cc-badge) {
+  font-family: var(--st-mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+  padding: 2px 8px; border-radius: 999px; border: 1px solid var(--st-line); background: #fafbf8; color: var(--st-ink-2);
+}
+.st .st-twin-host .hv-mode { border-color: #cfc7e6; background: #f3f0fa; color: #55478a; }
+
+/* ---------------------------------------------------------------- buttons */
+.st .st-twin-host .d2-button {
+  min-height: 36px; padding: 0 16px; gap: 8px; border-radius: 9px; font-size: 13px; font-weight: 600; color: #fff;
+  background: linear-gradient(180deg, #2f5b44, var(--st-accent)); border: 1px solid #22442f;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(24, 35, 29, 0.18), 0 6px 14px -6px rgba(38, 77, 57, 0.55);
+}
+.st .st-twin-host .d2-button:hover:not(:disabled) { background: linear-gradient(180deg, #386a4f, var(--st-accent-2)); }
+.st .st-twin-host .d2-button:disabled { opacity: 0.45; box-shadow: none; }
+.st .st-twin-host :is(.d2-back, .d2-quiet-button, .hv-camera-tools button, .dp-open, .hv-command-back, .hv-setup-back) {
+  border-radius: 9px; border: 1px solid rgba(24, 35, 29, 0.12); background: #fff; color: var(--st-ink); box-shadow: var(--st-shadow-1); font-weight: 500;
+}
+.st .st-twin-host :is(.d2-back, .d2-quiet-button, .hv-camera-tools button, .dp-open, .hv-command-back, .hv-setup-back):hover:not(:disabled) {
+  border-color: rgba(24, 35, 29, 0.22); background: #fff; color: var(--st-accent);
+}
+
+/* segmented toggles (3D twin / 2D plan, filters): Studio's iOS-style track */
+.st .st-twin-host .d2-view-toggle { background: rgba(118, 128, 120, 0.12); border: 0; border-radius: 10px; padding: 2px; }
+.st .st-twin-host .d2-view-toggle button { border: 0; border-radius: 8px; color: var(--st-ink-2); background: transparent; }
+.st .st-twin-host .d2-view-toggle button:is([aria-pressed='true'], .is-active, .on) {
+  background: #fff; color: var(--st-accent); font-weight: 600; box-shadow: 0 1px 2px rgba(24, 35, 29, 0.10), 0 3px 8px -2px rgba(24, 35, 29, 0.12);
+}
+.st .st-twin-host .dp-filters button { border-radius: 999px; border: 1px solid var(--st-line); background: #fff; color: var(--st-ink-2); }
+.st .st-twin-host .dp-filters button:is([aria-pressed='true'], .is-active, .on) { background: var(--st-accent); border-color: var(--st-accent); color: #fff; }
+
+/* ---------------------------------------------------------------- fields */
+.st .st-twin-host :is(select, input:not([type='checkbox']):not([type='radio']):not([type='range']), textarea, .al-select-input) {
+  border-radius: 10px; border-color: rgba(24, 35, 29, 0.12); background: rgba(255, 255, 255, 0.9); color: var(--st-ink);
+}
+.st .st-twin-host :is(select, input, textarea):focus { border-color: rgba(52, 102, 75, 0.6); box-shadow: 0 0 0 4px rgba(52, 102, 75, 0.12); outline: none; }
+.st .st-twin-host :is(input[type='checkbox'], input[type='radio'], input[type='range']) { accent-color: var(--st-accent); }
+
+/* ---------------------------------------------------------------- the 3D twin frame */
+.st .st-twin-host .hv-twin { background: #edf0ea; border-color: var(--st-line); border-radius: 10px; }
+.st .st-twin-host .hv-twin-caption { font-family: var(--st-mono); letter-spacing: 0.08em; color: var(--st-muted); }
+
+/* ---------------------------------------------------------------- the few hard-coded colours left */
+/* a chosen alert is a selection, so it is green, not warning amber */
+.st .st-twin-host .al-card.is-selected .al-icon { background: var(--st-accent); border-color: var(--st-accent); color: #fff; }
+/* Command Center warning outlines: Studio's softer warning amber */
+.st .st-twin-host :is(.cc-system.affected, .cc-sequence, .cc-sequence li > span, .cc-approval) { border-color: #e2d3b0; }
+/* "Recovering" uses the same purple as Studio's Simulated tag */
+.st .st-twin-host .dp-status.recovering { color: #55478a; background: #f3f0fa; border-color: #cfc7e6; }
+.st .st-twin-host .dp-status.recovering i { background: #6c5ca8; }
+/* the step bar inside Protect: the current step is green, like Studio's rail */
+.st .st-twin-host .d2-status-active { border-color: var(--st-accent-2); }
+.st .st-twin-host .d2-status-active i { background: var(--st-accent-2); }
+.st .st-twin-host .d2-status-completed { background: var(--st-ok); border-color: var(--st-ok); }

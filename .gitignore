@@ -1,0 +1,58 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# data: the CoStar kit is licensed sponsor data; never commit it or its caches
+data/cache/
+data/raw/
+*.zip
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+
+# node / next
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+test-results/
+playwright-report/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# misc
+*.log
+.DS_Store
+Thumbs.db
+
+# Tello bridge: saved camera frames stay on the demo laptop
+captures/
+services/api/agent_workspace/notes/*
+
+# from sid (twin + protect)
+twin/data/calibration.json
+hardware/firmware/**/build/
+protect/data/
+
+# from mobile-ios
+# Xcode (mobile/)
+xcuserdata/
+*.xcuserstate
+mobile/build/
+DerivedData/
+
+# from website-live-feeds
+.hotspot
+/Data/
+web/data/costar-sites.json
+web/data/media/
+bridge/.cache/
+bridge/.env

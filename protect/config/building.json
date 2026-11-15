@@ -1,0 +1,37 @@
+{
+  "_README": "Contract between DESIGN and PROTECT. DESIGN exports this for the chosen parcel; PROTECT plans sensors from it and maps the physical model's hardware onto rooms. Values below are a PLACEHOLDER concept until DESIGN exports the real one.",
+  "project": {
+    "name": "Rice Village Student Residence (concept)",
+    "city": "Houston, TX",
+    "parcel_source": "CoStar listing + Vexcel footprint (placeholder)",
+    "beds": 200,
+    "floors": 4,
+    "manager": "Building manager"
+  },
+  "rooms": [
+    {"id": "B1-MECH",   "name": "B1 Mechanical",     "floor": 0, "type": "mechanical", "x": 0,  "y": 0, "w": 10, "h": 8, "wet_fixtures": 2, "notes": "water heaters, main riser, sump"},
+    {"id": "B1-ELEC",   "name": "B1 Electrical",     "floor": 0, "type": "electrical", "x": 10, "y": 0, "w": 6,  "h": 8, "wet_fixtures": 0},
+    {"id": "1F-LOUNGE", "name": "1F Lounge",         "floor": 1, "type": "lounge",     "x": 0,  "y": 0, "w": 12, "h": 9, "wet_fixtures": 0},
+    {"id": "1F-KITCH",  "name": "1F Shared Kitchen", "floor": 1, "type": "kitchen",    "x": 12, "y": 0, "w": 8,  "h": 9, "wet_fixtures": 2},
+    {"id": "1F-CORR",   "name": "1F Corridor",       "floor": 1, "type": "corridor",   "x": 0,  "y": 9, "w": 20, "h": 3, "wet_fixtures": 0},
+    {"id": "2F-BATH",   "name": "2F Bathroom",       "floor": 2, "type": "bathroom",   "x": 0,  "y": 0, "w": 7,  "h": 6, "wet_fixtures": 6, "notes": "8 showers above the lounge"},
+    {"id": "2F-ROOMS",  "name": "2F Bedrooms 201-212", "floor": 2, "type": "bedroom",  "x": 7,  "y": 0, "w": 13, "h": 9, "wet_fixtures": 0},
+    {"id": "2F-CORR",   "name": "2F Corridor",       "floor": 2, "type": "corridor",   "x": 0,  "y": 9, "w": 20, "h": 3, "wet_fixtures": 0},
+    {"id": "2F-LAUNDRY","name": "2F Laundry",        "floor": 2, "type": "laundry",    "x": 0,  "y": 6, "w": 7,  "h": 3, "wet_fixtures": 4}
+  ],
+  "below": {"2F-BATH": "1F-LOUNGE", "2F-LAUNDRY": "1F-LOUNGE"},
+  "hardware_map": {
+    "leak":   "2F-BATH",
+    "valve":  "2F-BATH",
+    "smoke":  "1F-LOUNGE",
+    "pir":    "1F-LOUNGE",
+    "dht":    "B1-MECH",
+    "pipe":   "B1-MECH",
+    "sump":   "B1-MECH",
+    "fan":    "B1-MECH",
+    "strobe": "1F-CORR",
+    "door":   "1F-LOUNGE",
+    "lobby":  "1F-CORR"
+  },
+  "led_rooms": ["2F-BATH", "B1-MECH", "1F-LOUNGE", "1F-CORR"]
+}

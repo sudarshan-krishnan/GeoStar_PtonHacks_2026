@@ -1,0 +1,35 @@
+/* Studio · Design: the HAVEN facility model. The twin keeps its Smart Blocks look inside a Studio card. */
+.st-model-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.st-model-head h3 { margin: 0 0 2px; }
+.st-model-head h3 svg { color: var(--st-accent-2); }
+.st-model-head .st-tag { margin: 0; }
+
+/* lend Smart Blocks' scoped styles to the twin without its page-shell layout */
+.d2-shell.sb.st-twin-host {
+  display: block; min-height: 0; padding: 0; gap: 0; background: transparent; overflow: visible;
+  font-size: 14px; line-height: 1.5;
+}
+
+.st-model-loading { display: grid; place-items: center; height: 420px; border-radius: 12px; border: 1px solid var(--st-line-2); background: var(--st-bg); color: var(--st-muted); font-size: 13px; }
+.st .st-model-error { margin: 0; justify-content: space-between; }
+
+.st-model-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--st-line-2); }
+.st-model-details dt { font-family: var(--st-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--st-muted); }
+.st-model-details dd { margin: 3px 0 0; font-size: 15px; font-weight: 600; }
+.st-model-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--st-line-2); }
+.st-model-saved { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--st-ok); }
+@media (max-width: 720px) {
+  .st-model-details { grid-template-columns: 1fr; }
+  .st-model-foot { flex-direction: column; align-items: stretch; }
+}
+
+/* Design · Protect and Deploy: Smart Blocks screens inside the Studio page */
+.d2-shell.sb.st-sb-host { display: flex; flex-direction: column; gap: 16px; }
+.d2-shell.sb.st-sb-host .d2-primary { margin: 0; }
+.st-design .st-lede { margin-top: 0; }
+
+/* Model tab: the concept model for the property type picked in Define */
+.st-concept { position: relative; margin: 0; height: clamp(320px, 46vw, 520px); border-radius: 12px; overflow: hidden; border: 1px solid var(--st-line-2);
+  background: linear-gradient(180deg, #f7f8f4 0%, #e9ece6 100%); cursor: grab; touch-action: none; }
+.st-concept:active { cursor: grabbing; }
+.st-concept-status { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: var(--st-muted); }

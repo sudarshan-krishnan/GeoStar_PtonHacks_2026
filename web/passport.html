@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SiteStar passport</title>
+  <meta name="description" content="SiteStar's AI-ready passport for one building: readiness checklist, power gap, pause budget, inspection findings and the hardware pause record.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="passport.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2l3.6 9.4L29 13l-7.2 6.4L24 29l-8-5-8 5 2.2-9.6L3 13l9.4-1.6z' fill='%23eb6834'/></svg>">
+</head>
+<body class="pp-page">
+  <div class="pp-tools wrap">
+    <a class="btn-small" href="index.html#inspect">← Back to SiteStar</a>
+    <button class="btn-small" type="button" id="pp-print">Print or save as PDF</button>
+  </div>
+  <main class="sheet" id="sheet" aria-live="polite">
+    <p class="fine">Loading the passport…</p>
+  </main>
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script type="module" src="js/passport.js"></script>
+</body>
+</html>
