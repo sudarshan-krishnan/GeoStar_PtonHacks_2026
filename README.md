@@ -1,4 +1,4 @@
-# PlotStar
+# PlotStar 
 
 **Find it. Design it. Protect it.** A complete local hackathon application connecting development-specific site intelligence, editable conceptual architecture, and HAVEN sensor monitoring through one persisted project.
 
