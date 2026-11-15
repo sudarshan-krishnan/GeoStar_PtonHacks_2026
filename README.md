@@ -9,7 +9,7 @@ GeoStar finds the right place to build, designs what goes on it, and watches ove
 
 Built at HackPrinceton Fall 2026
 
-![GeoStar landing page](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-hero.png)
+![GeoStar landing page](docs/screenshots/landing-hero.png)
 
 </div>
 
@@ -28,19 +28,19 @@ A project gets blocked when it lands in the wrong place: too close to homes, in 
 
 Today those are three separate jobs with three separate tools. We wanted one product that follows a building through its whole life.
 
-![Why now](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-why.png)
+![Why now](docs/screenshots/landing-why.png)
 
 ## What it does
 
 GeoStar does three things, in the order a building lives them.
 
-![The three acts](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-three-acts.png)
+![The three acts](docs/screenshots/landing-three-acts.png)
 
 ### 1. Find the right place
 
 The best site depends on what you are building. A data center lives or dies on power and water. A family home lives on schools, parks and the walk to the river. GeoStar weighs the factors that matter for your project and shows why a parcel wins.
 
-![Find: weigh the factors, watch the ranking change](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-find.png)
+![Find: weigh the factors, watch the ranking change](docs/screenshots/landing-find.png)
 
 For data centers, GeoStar screens real CoStar properties in Houston and Los Angeles against hard pass/fail gates before any score is shown:
 
@@ -55,82 +55,82 @@ A site that fails a gate is "Not suitable" whatever it costs. Every number carri
 
 The original workspace does the same for other project types, with real OpenStreetMap tiles and on-demand amenity lookups:
 
-![Workspace: candidate sites on the map, scored for a 100 MW data center](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/workspace-discover.png)
+![Workspace: candidate sites on the map, scored for a 100 MW data center](docs/screenshots/workspace-discover.png)
 
 ### 2. Design what goes on it
 
 Start in the Studio by saying what you want to build and where.
 
-![Studio: what are you building, and where?](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/studio-define.png)
+![Studio: what are you building, and where?](docs/screenshots/studio-define.png)
 
 For a data center, GeoStar's layout engine generates three concepts on the chosen parcel (halls, substation yard, power and cooling routes), lets you compare them, records the decision and exports a DXF for CAD. Other project types open an orbitable 3D concept model:
 
-![Studio: wind farm concept model](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/studio-concept-model.png)
+![Studio: wind farm concept model](docs/screenshots/studio-concept-model.png)
 
 <table>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/concept-solar.png" alt="Solar farm concept model"><br><sub><b>Solar farm</b></sub></td>
-    <td><img src="https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/concept-commercial.png" alt="Commercial concept model"><br><sub><b>Commercial</b></sub></td>
+    <td><img src="docs/screenshots/concept-solar.png" alt="Solar farm concept model"><br><sub><b>Solar farm</b></sub></td>
+    <td><img src="docs/screenshots/concept-commercial.png" alt="Commercial concept model"><br><sub><b>Commercial</b></sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/concept-park.png" alt="Community park concept model"><br><sub><b>Community park</b></sub></td>
-    <td><img src="https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/concept-student-living.png" alt="Student living concept model"><br><sub><b>Student living</b></sub></td>
+    <td><img src="docs/screenshots/concept-park.png" alt="Community park concept model"><br><sub><b>Community park</b></sub></td>
+    <td><img src="docs/screenshots/concept-student-living.png" alt="Student living concept model"><br><sub><b>Student living</b></sub></td>
   </tr>
 </table>
 
 In the workspace you shape the massing directly. Width, depth, floors, landscape and parking drive the geometry, the cost and the yield together:
 
-![Workspace: three concepts, editable in 3D](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/workspace-design.png)
+![Workspace: three concepts, editable in 3D](docs/screenshots/workspace-design.png)
 
 The landing page tells this part of the story with a live model: draft it, edit it, finalize it, and take away a CAD drawing, a 3D model and a Gaussian splat to walk through.
 
-![Design: model, edit, finalize](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-design.png)
+![Design: model, edit, finalize](docs/screenshots/landing-design.png)
 
 ### 3. Protect it for life
 
 Smoke alarms catch fires. GeoStar catches what causes them. Sensors go where buildings really fail: water risers, electrical panels, corridors.
 
-![Protect: a hidden leak, caught and contained](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-protect.png)
+![Protect: a hidden leak, caught and contained](docs/screenshots/landing-protect.png)
 
 Protection takes two steps. Choose what to watch and set your limits:
 
-![Protect: choose your alerts](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/protect-alerts.png)
+![Protect: choose your alerts](docs/screenshots/protect-alerts.png)
 
 Review the plan, place the hub, pick the exit route and deploy:
 
-![Protect: review and deploy](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/protect-place.png)
+![Protect: review and deploy](docs/screenshots/protect-place.png)
 
 ### HAVEN: the command center
 
 Once deployed, every facility gets a HAVEN command center: a digital twin, live readings against your limits, and a team of agents that explain what is happening in plain words.
 
-![HAVEN command center, all systems healthy](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/haven-command.png)
+![HAVEN command center, all systems healthy](docs/screenshots/haven-command.png)
 
 Trigger a water leak. HAVEN traces the impact chain (riser, elevator, exit route), proposes a response plan, reroutes the evacuation path and waits for a person to approve before any guidance is shared with staff.
 
-![HAVEN: water leak detected, response plan awaiting approval](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/haven-leak.png)
+![HAVEN: water leak detected, response plan awaiting approval](docs/screenshots/haven-leak.png)
 
 A fire is a confirmed emergency. The twin shows the affected zone, the blocked exit and the clear one.
 
-![HAVEN: fire hazard detected](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/haven-fire.png)
+![HAVEN: fire hazard detected](docs/screenshots/haven-fire.png)
 
 Every deployed project sits in one view, the ones that need attention first.
 
-![HAVEN: every deployed project in one view](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/haven-deployed.png)
+![HAVEN: every deployed project in one view](docs/screenshots/haven-deployed.png)
 
 HAVEN speaks to each person differently. An owner gets the cost. A resident gets the way out. An engineer gets the breaker number.
 
-![HAVEN: five agents, three audiences](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-haven.png)
+![HAVEN: five agents, three audiences](docs/screenshots/landing-haven.png)
 
 ### Agents that show their work
 
 One orchestrator and six specialists, built with the LangChain Deep Agents SDK on LangGraph. The orchestrator writes a plan and delegates to specialists in isolated contexts, in parallel when their work is independent. Models choose what to investigate and explain it. Code produces every number and the score.
 
-![Agent Intelligence](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/agents-top.png)
+![Agent Intelligence](docs/screenshots/agents-top.png)
 
 The page reports its own architecture from the running server: each agent, its model, its tools, and the scoring rule as code.
 
-![Agent architecture, as the server reports it](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/agents-architecture.png)
+![Agent architecture, as the server reports it](docs/screenshots/agents-architecture.png)
 
 | Agent | Model | Job |
 |---|---|---|
@@ -148,17 +148,17 @@ The score has four pillars (Property 20%, Money 30%, Power and resources 25%, Pe
 
 The workspace keeps the whole journey in one persisted project: discover, design, protect, and a report you can export as a PDF.
 
-![Workspace: all projects](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/workspace-projects.png)
+![Workspace: all projects](docs/screenshots/workspace-projects.png)
 
-![Workspace: protect, with a sensor plan on the twin](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/workspace-open.png)
+![Workspace: protect, with a sensor plan on the twin](docs/screenshots/workspace-open.png)
 
-![Workspace: investment and planning report](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/workspace-report.png)
+![Workspace: investment and planning report](docs/screenshots/workspace-report.png)
 
 ### A landing page that tells the story
 
 The landing page is the pitch: an inverted pyramid (the answer first, then the three acts, then the detail), a global action bar that follows you down the page, and a command menu on <kbd>Ctrl</kbd> <kbd>K</kbd>.
 
-![Command menu](https://raw.githubusercontent.com/ishita48/PlotStar/main/docs/screenshots/landing-command-menu.png)
+![Command menu](docs/screenshots/landing-command-menu.png)
 
 ### Also in the repo
 
