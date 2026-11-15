@@ -1,0 +1,4 @@
+djitellopy>=2.5
+flask>=3.0
+opencv-python>=4.8
+numpy>=1.24
