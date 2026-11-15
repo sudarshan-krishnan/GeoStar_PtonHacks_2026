@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "plotstar-costar": {
+      "type": "stdio",
+      "command": "services/api/.venv/Scripts/python.exe",
+      "args": ["services/api/run_mcp.py"],
+      "env": {}
+    }
+  }
+}
